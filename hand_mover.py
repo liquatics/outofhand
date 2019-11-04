@@ -103,27 +103,32 @@ while not rospy.is_shutdown():
             odds.header.stamp = rospy.get_rostime()
             hand_pub.publish(odds)
             rospy.sleep(0.1)
+        action.data = "done"
     elif action.data == "evens":
         time_init = rospy.get_rostime()
         while rospy.get_rostime() < time_init+rospy.Duration(1):
             evens.header.stamp = rospy.get_rostime()
             hand_pub.publish(evens)
             rospy.sleep(0.1)
+        action.data = "done"
     elif action.data == "rock":
         time_init = rospy.get_rostime()
         while rospy.get_rostime() < time_init+rospy.Duration(1):
             rock.header.stamp = rospy.get_rostime()
             hand_pub.publish(rock)
             rospy.sleep(0.1)
+        action.data = "done"
     elif action.data == "paper":
         time_init = rospy.get_rostime()
         while rospy.get_rostime() < time_init+rospy.Duration(1):
             paper.header.stamp = rospy.get_rostime()
             hand_pub.publish(paper)
             rospy.sleep(0.1)
+        action.data = "done"
     elif action.data == "scissors":
         time_init = rospy.get_rostime()
         while rospy.get_rostime() < time_init+rospy.Duration(1):
             scissors.header.stamp = rospy.get_rostime()
             hand_pub.publish(scissors)
             rospy.sleep(0.1)
+        action.data = "done"
