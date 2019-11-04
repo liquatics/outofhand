@@ -22,25 +22,71 @@ hand_array = []
 #                               setup for Odds-Evens
 # *****************************************************************************
 
-# initialize odds and assign hand_array
+# initialize "odds" and assign hand_array
 odds = JointTrajectory()
 odds.joint_names = hand_array
-# set points for odds finger positions, only has pointer finger extend
+# set points for "odds" finger positions, only has pointer finger extend
 # JointTrajectoryPoint of 0 = fully extended, 1 = fully retracted
 odds_points = JointTrajectoryPoint()
 odds_points.positions = []
 odds_points.velocities = []*
-# send points array back to odds for loop commands
-odds.points = [odds_point]
+# send points array back to "odds" for eventual loop commands
+odds.points = [odds_points]
 
 
-# initialize evens and assign hand_array
+# initialize "evens" and assign hand_array
 evens = JointTrajectory()
 evens.joint_names = hand_array
-# set points for evens finger positions, only has pointer/middle finger extend
+# set points for "evens" finger positions, extends pointer/middle finger
 # JointTrajectoryPoint of 0 = fully extended, 1 = fully retracted
 evens_points = JointTrajectoryPoint()
 evens_points.positions = []
 evens_points.velocities = []*
-# send points array back to evens for loop commands
+# send points array back to "evens" for eventual loop commands
 evens.points = [evens_points]
+
+
+# *****************************************************************************
+#                         setup for Rock-Paper-Scissors
+# *****************************************************************************
+
+# initialize "rock" and assign hand_array
+rock = JointTrajectory()
+rock.joint_names = hand_array
+# set points for "rock" finger positions, creates a fist
+# JointTrajectoryPoint of 0 = fully extended, 1 = fully retracted
+rock_points = JointTrajectoryPoint()
+rock_points.positions = []
+rock_points.velocities = []*
+# send points array back to "rock" for eventual loop commands
+rock.points = [rock_points]
+
+
+# initialize "paper" and assign hand_array
+paper = JointTrajectory()
+paper.joint_names = hand_array
+# set points for "paper" finger positions, extends all fingers
+# JointTrajectoryPoint of 0 = fully extended, 1 = fully retracted
+paper_points = JointTrajectoryPoint()
+paper_points.positions = []
+paper_points.velocities = []*
+# send points array back to "paper" for eventual loop commands
+paper.points = [paper_points]
+
+
+# NOTE: this is the same as "evens"
+# initialize "scissors" and assign hand_array
+scissors = JointTrajectory()
+scissors.joint_names = hand_array
+# set points for "scissors" finger positions, extends pointer/middle finger
+# JointTrajectoryPoint of 0 = fully extended, 1 = fully retracted
+scissors_points = JointTrajectoryPoint()
+scissors_points.positions = []
+scissors_points.velocities = []*
+# send points array back to "scissors" for eventual loop commands
+scissors.points = [scissors_points]
+
+
+# lets get loopy
+while not rospy.is_shutdown():
+    
