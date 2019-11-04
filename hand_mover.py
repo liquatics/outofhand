@@ -8,6 +8,14 @@ from std_msgs.msg import String
 # initialize the node for hand movement
 rospy.init_node('hand_mover')
 
+# different string commands:
+# odds, evens, rock, paper, scissors
+action = String()
+# begin the callback function to get the action to perform
+def gesture_callback(data):
+    global action
+    action.data = data.data
+
 # subscribe to /hand_command topic for incoming evaluator commands
 rospy.Subscriber("/hand_command", String, gesture_callback)
 
@@ -89,4 +97,33 @@ scissors.points = [scissors_points]
 
 # lets get loopy
 while not rospy.is_shutdown():
-    
+    if action.data == "odds":
+        time_init = rospy.get_rostime()
+        while rospy.get_rostime() < time_init+rospy.Duration(1):
+            odds.header.stamp = rospy.get_rostime()
+            hand_pub.publish(odds)
+            rospy.sleep(0.1)
+    elif action.data == "evens":
+        time_init = rospy.get_rostime()
+        while rospy.get_rostime() < time_init+rospy.Duration(1):
+            evens.header.stamp = rospy.get_rostime()
+            hand_pub.publish(evens)
+            rospy.sleep(0.1)
+    elif action.data == "rock":
+        time_init = rospy.get_rostime()
+        while rospy.get_rostime() < time_init+rospy.Duration(1):
+            rock.header.stamp = rospy.get_rostime()
+            hand_pub.publish(rock)
+            rospy.sleep(0.1)
+    elif action.data == "paper":
+        time_init = rospy.get_rostime()
+        while rospy.get_rostime() < time_init+rospy.Duration(1):
+            paper.header.stamp = rospy.get_rostime()
+            hand_pub.publish(paper)
+            rospy.sleep(0.1)
+    elif action.data == "scissors":
+        time_init = rospy.get_rostime()
+        while rospy.get_rostime() < time_init+rospy.Duration(1):
+            scissors.header.stamp = rospy.get_rostime()
+            hand_pub.publish(scissors)
+            rospy.sleep(0.1)
