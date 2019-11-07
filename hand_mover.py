@@ -19,6 +19,12 @@ def gesture_callback(data):
 # subscribe to /hand_command topic for incoming evaluator commands
 rospy.Subscriber("/hand_command", String, gesture_callback)
 
+# subscribe to gesture controllers
+rospy.Subscriber("/utility_gestures", String, gesture_callback)
+rospy.Subscriber("/expressive_gestures", String, gesture_callback)
+rospy.Subscriber("/rps_gestures", String, gesture_callback)
+rospy.Subscriber("/oe_gestures", String, gesture_callback)
+
 # publish the /hand_controller/command for actions
 hand_pub = rospy.Publisher('/hand_controller/command',
                            JointTrajectory, queue_size=10)
