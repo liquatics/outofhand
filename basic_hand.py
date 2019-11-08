@@ -11,7 +11,8 @@ rospy.init_node('basic_hand')
 # Will evaluate info sent on these channels. #
 # ========================================== #
 
-rospy.Subscriber('/utility_gestures', String, gesture_update)
+rospy.Subscriber('/hand_utility_gestures', String, setHandGesture)
+rospy.Subscriber('/arm_utility_gestures', String, setArmGesture)
 
 # ================ #
 # Publishers      #
