@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import rospy
+from std_msgs.msg import Empty
 from trajectory_msgs.msg import JointTrajectory
 from trajectory_msgs.msg import JointTrajectoryPoint
 
