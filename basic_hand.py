@@ -6,6 +6,7 @@ from trajectory_msgs.msg import JointTrajectoryPoint
 
 rospy.init_node('basic_hand')
 
+
 # ================ #
 # SUBSCRIBERS      #
 # --------------------------------------------------------------------------- #
@@ -13,6 +14,7 @@ rospy.init_node('basic_hand')
 # =========================================================================== #
 rospy.Subscriber('/hand_utility_gestures', String, setHandGesture)
 rospy.Subscriber('/arm_utility_gestures', String, setArmGesture)
+
 
 # ================ #
 # PUBLISHERS      #
@@ -26,6 +28,7 @@ arm_pub = rospy.Publisher('/right_arm/request',
 arm_watchdog = rospy.Publisher('/right_arm/watchdog',
                                 Empty, queue_size=10)
 
+
 # ================ #
 # DEFINITIONS      #
 # --------------------------------------------------------------------------- #
@@ -36,10 +39,10 @@ arm_watchdog = rospy.Publisher('/right_arm/watchdog',
 # Arm gesture parameters only include shoulder_medial_joint and elbow_joint.  #
 # All others in the array should be set as 0.                                 #
 # =========================================================================== #
-pointer = [1, 0, 1, 1, 1]
-peace = [1, 0, 0, 1, 1]
-thumbs_up = [0, 1, 1, 1, 1]
-fist = [1, 1, 1, 1, 1]
+pointer = [255, 0, 255, 255, 255]
+peace = [255, 0, 0, 255, 255]
+thumbs_up = [0, 255, 255, 255, 255]
+fist = [255, 255, 255, 255, 255]
 open_hand = [0, 0, 0, 0, 0]
 
 hand_gesture1 = JointTrajectory()
@@ -54,6 +57,7 @@ hand_gesture5 = JointTrajectory()
 hand_gesture5.points = [JointTrajectoryPoint(positions=open_hand)]
 
 
+# standard positions for raised and lowered arm
 arm_names = ['shoulder_flexion_joint',
              'shoulder_abduction_joint',
              'shoulder_medial_joint',
@@ -67,16 +71,19 @@ arm_gesture1 = JointTrajectory()
 arm_gesture1.joint_names = arm_names
 arm_gesture_points1 = JointTrajectoryPoint()
 arm_gesture_points1.positions = [raised]
-arm_gesture_points1.velocities = [0]*5
-# send points array back to "odds" for eventual loop commands
 arm_gesture1.points = [arm_gesture_points1]
+arm_gesture2 = JointTrajectory()
+arm_gesture2.joint_names = arm_names
+arm_gesture_points2 = JointTrajectoryPoint()
+arm_gesture_points2.positions = [lowered]
+arm_gesture2.points = [arm_gesture_points2]
+
 
 # =================== #
 # setHandGesture(msg) #
 # ----------------------------------------------------------------------- #
 # Evaluates an action and sets the gesture points to reflect that action. #
 # ======================================================================= #
-
 def setHandGesture(msg):
     global hand_gesture
 
