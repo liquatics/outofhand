@@ -67,6 +67,10 @@ def setHandGesture(msg):
     else:
         hand_gesture.points = [JointTrajectoryPoint(positions=open_hand)]
 
+    gesture_state = "GESTURING"
+
+    return gesture_state
+
 
 # =================== #
 # setArmGesture(msg)  #
@@ -82,8 +86,16 @@ def setArmGesture(msg):
     else:
         arm_gesture.points = [JointTrajectoryPoint(positions=raised)]
 
+rate = rospy.Rate(10)
+gesture_state = "IDLE"
+
 # Fruit loop
 while not rospy.is_shutdown():
-    hand_pub.publish(hand_gesture)
-    arm_pub.publish(arm_gesture)
-    rospy.sleep(0.1)
+
+    if(gesture_state == "IDLE"):
+        arm_watchdog.publish(Empty)
+    elif(gesture_state == "GESTURING")
+        hand_pub.publish(hand_gesture)
+        arm_pub.publish(arm_gesture)
+        rospy.sleep(0.1)
+        gesture_state = "IDLE"
