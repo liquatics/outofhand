@@ -30,9 +30,11 @@ arm_watchdog = rospy.Publisher('/right_arm/watchdog',
 # DEFINITIONS      #
 # --------------------------------------------------------------------------- #
 # Variables used throughout the node.                                         #
-# Hand gesture parameters are defined as:                                     #
-#                                                                             #
+# Hand gesture parameters do not need an array and are defined as:            #
 # [thumb, pointer, middle, ring, pinky]                                       #
+#                                                                             #
+# Arm gesture parameters only include shoulder_medial_joint and elbow_joint.  #
+# All others in the array should be set as 0.                                 #
 # =========================================================================== #
 pointer = [1, 0, 1, 1, 1]
 peace = [1, 0, 0, 1, 1]
@@ -51,16 +53,23 @@ hand_gesture4.points = [JointTrajectoryPoint(positions=fist)]
 hand_gesture5 = JointTrajectory()
 hand_gesture5.points = [JointTrajectoryPoint(positions=open_hand)]
 
-arm_gesture = JointTrajectory()
-arm_names = ['shoulder_flexation_joint',
+
+arm_names = ['shoulder_flexion_joint',
              'shoulder_abduction_joint',
              'shoulder_medial_joint',
              'elbow_joint',
-             'wrist_joint',
-             ]
-raised = [0, 0, 0, 0, 0]
-lowered = [1, 1, 1, 1, 1]
+             'wrist_joint']
 
+raised = [0, 0, 1, 1, 0]
+lowered = [0, 0, 0, 0, 0]
+
+arm_gesture1 = JointTrajectory()
+arm_gesture1.joint_names = arm_names
+arm_gesture_points1 = JointTrajectoryPoint()
+arm_gesture_points1.positions = [raised]
+arm_gesture_points1.velocities = [0]*5
+# send points array back to "odds" for eventual loop commands
+arm_gesture1.points = [arm_gesture_points1]
 
 # =================== #
 # setHandGesture(msg) #
