@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import rospy
-from std_msgs.msg import Empty
 from std_msgs.msg import String
 from trajectory_msgs.msg import JointTrajectory
 from trajectory_msgs.msg import JointTrajectoryPoint
@@ -15,6 +14,8 @@ rospy.init_node('hand_tester')
 # =========================================================================== #
 hand_pub = rospy.Publisher('/hand_controller/command',
                            JointTrajectory, queue_size=10)
+test_pub = rospy.Publisher('/hand_controller/command',
+                           String, queue_size=10)
 
 
 # ================ #
@@ -27,10 +28,10 @@ hand_pub = rospy.Publisher('/hand_controller/command',
 # Arm gesture parameters only include shoulder_medial_joint and elbow_joint.  #
 # All others in the array should be set as 0.                                 #
 # =========================================================================== #
-pointer = [255, 0, 255, 255, 255]
-peace = [255, 0, 0, 255, 255]
-thumbs_up = [0, 255, 255, 255, 255]
-fist = [255, 255, 255, 255, 255]
+pointer = [1, 0, 1, 1, 1]
+peace = [1, 0, 0, 1, 1]
+thumbs_up = [0, 1, 1, 1, 1]
+fist = [1, 1, 1, 1, 1]
 open_hand = [0, 0, 0, 0, 0]
 
 hand_gesture1 = JointTrajectory()
@@ -45,6 +46,9 @@ hand_gesture5 = JointTrajectory()
 hand_gesture5.points = [JointTrajectoryPoint(positions=open_hand)]
 
 
+gesture_state = String()
+hand_gesture = JointTrajectory()
+
 # ================== #
 # Callback Functions #
 # ----------------------------------------------------------------------- #
@@ -52,20 +56,22 @@ hand_gesture5.points = [JointTrajectoryPoint(positions=open_hand)]
 # ======================================================================= #
 def setHandGesture(msg):
     global hand_gesture
+    global gesture_state
 
-    if msg == "pointer":
+    gesture_state = "GESTURING"
+    test_pub.publish("received")
+
+    if msg == 'pointer':
         hand_gesture.points = hand_gesture1.points
+
     elif msg == "peace":
         hand_gesture.points = hand_gesture2.points
-    elif msg == "thumbs_up"
+    elif msg == "thumbs_up":
         hand_gesture.points = hand_gesture3.points
-    elif msg == "fist"
+    elif msg == "fist":
         hand_gesture.points = hand_gesture4.points
     else:
         hand_gesture.points = hand_gesture5.points
-    gesture_state = "GESTURING"
-
-    return gesture_state
 
 
 # ================ #
@@ -73,17 +79,14 @@ def setHandGesture(msg):
 # --------------------------------------------------------------------------- #
 # Will evaluate info sent on these channels directly from evaluator terminal. #
 # =========================================================================== #
-rospy.Subscriber('/hand_utility_gestures', String, setHandGesture)
+rospy.Subscriber("/hand_utility_gestures", String, setHandGesture)
 
 
 rate = rospy.Rate(10)
-gesture_state = "IDLE"
 
 # Fruit loop
 while not rospy.is_shutdown():
 
-    if(gesture_state == "GESTURING")
+    if(gesture_state == "GESTURING"):
         hand_pub.publish(hand_gesture)
-        arm_pub.publish(arm_gesture)
         rospy.sleep(0.1)
-        gesture_state = "IDLE"

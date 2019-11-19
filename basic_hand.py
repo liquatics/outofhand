@@ -15,10 +15,8 @@ rospy.init_node('basic_hand')
 # =========================================================================== #
 hand_pub = rospy.Publisher('/hand_controller/command',
                            JointTrajectory, queue_size=10)
-arm_pub = rospy.Publisher('/right_arm/request',
+arm_pub = rospy.Publisher('/right_arm_controller/command',
                            JointTrajectory, queue_size=10)
-arm_watchdog = rospy.Publisher('/right_arm/watchdog',
-                                Empty, queue_size=10)
 
 
 # ================ #
@@ -31,10 +29,10 @@ arm_watchdog = rospy.Publisher('/right_arm/watchdog',
 # Arm gesture parameters only include shoulder_medial_joint and elbow_joint.  #
 # All others in the array should be set as 0.                                 #
 # =========================================================================== #
-pointer = [255, 0, 255, 255, 255]
-peace = [255, 0, 0, 255, 255]
-thumbs_up = [0, 255, 255, 255, 255]
-fist = [255, 255, 255, 255, 255]
+pointer = [1, 0, 1, 1, 1]
+peace = [1, 0, 0, 1, 1]
+thumbs_up = [0, 1, 1, 1, 1]
+fist = [1, 1, 1, 1, 1]
 open_hand = [0, 0, 0, 0, 0]
 
 hand_gesture1 = JointTrajectory()
@@ -49,14 +47,10 @@ hand_gesture5 = JointTrajectory()
 hand_gesture5.points = [JointTrajectoryPoint(positions=open_hand)]
 
 
-arm_names = ['shoulder_flexion_joint',
-             'shoulder_abduction_joint',
-             'shoulder_medial_joint',
-             'elbow_joint',
-             'wrist_joint']
+arm_names = ['shoulder_medial_joint', 'elbow_joint']
 
-raised = [0, 0, 1, 1, 0]
-lowered = [0, 0, 0, 0, 0]
+raised = [1, 1]
+lowered = [1.6, 1.6]
 
 arm_gesture1 = JointTrajectory()
 arm_gesture1.joint_names = arm_names
@@ -82,9 +76,9 @@ def setHandGesture(msg):
         hand_gesture.points = hand_gesture1.points
     elif msg == "peace":
         hand_gesture.points = hand_gesture2.points
-    elif msg == "thumbs_up"
+    elif msg == "thumbs_up":
         hand_gesture.points = hand_gesture3.points
-    elif msg == "fist"
+    elif msg == "fist":
         hand_gesture.points = hand_gesture4.points
     else:
         hand_gesture.points = hand_gesture5.points
@@ -97,10 +91,13 @@ def setArmGesture(msg):
     global arm_gesture
 
     if msg == "lower":
-        arm_gesture.points = [JointTrajectoryPoint(positions=lowered)]
+        arm_gesture.points = lowered
     else:
         arm_gesture.points = [JointTrajectoryPoint(positions=raised)]
 
+
+arm_gesture = JointTrajectory()
+arm_gesture.joint_names = arm_names
 
 # ================ #
 # SUBSCRIBERS      #
@@ -110,7 +107,7 @@ def setArmGesture(msg):
 rospy.Subscriber('/hand_utility_gestures', String, setHandGesture)
 rospy.Subscriber('/arm_utility_gestures', String, setArmGesture)
 
-
+empty_gesture = Empty()
 
 rate = rospy.Rate(10)
 gesture_state = "IDLE"
@@ -118,10 +115,14 @@ gesture_state = "IDLE"
 # Fruit loop
 while not rospy.is_shutdown():
 
-    if(gesture_state == "IDLE"):
-        arm_watchdog.publish(Empty)
-    elif(gesture_state == "GESTURING")
-        hand_pub.publish(hand_gesture)
-        arm_pub.publish(arm_gesture)
-        rospy.sleep(0.1)
-        gesture_state = "IDLE"
+    arm_pub.publish(arm_gesture)
+    rospy.sleep(0.1)
+
+    # if(gesture_state == "IDLE"):
+    #     #do nothing
+    #     rospy.sleep(0.1)
+    # elif(gesture_state == "GESTURING"):
+    #     hand_pub.publish(hand_gesture)
+    #     arm_pub.publish(arm_gesture)
+    #     rospy.sleep(0.1)
+    #     gesture_state = "IDLE"
