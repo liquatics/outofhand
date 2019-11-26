@@ -35,13 +35,17 @@ arm_gesture = JointTrajectory()
 arm_gesture.joint_names = arm_names
 arm_gesture_points = JointTrajectoryPoint()
 arm_gesture_points.positions = []
+arm_gesture_points.velocities = []
+arm_gesture_points.accelerations = []
+arm_gesture_points.effort = []
 arm_gesture_points.time_from_start = rospy.Duration(3)
 arm_gesture.points = [arm_gesture_points]
 
 position = String()
 
 # point locations
-test = [0, -1.6]
+# test = [-1.37, -1.54]
+test = [-1.6, -1.3]
 default = [0, 0]
 max_left = [0, 2]
 max_right = [3.2, 2]
@@ -92,4 +96,4 @@ while not rospy.is_shutdown():
 
     rospy.sleep(1)
     arm_pub.publish(arm_gesture)
-    rospy.sleep(0.1) # more of a catnap
+    rospy.sleep(0.01) # more of a catnap
