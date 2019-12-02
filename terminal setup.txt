@@ -1,0 +1,6 @@
+catkin build
+
+source ~/catkin_ws/devel/setup.bash
+sudo chmod 777 /dev/ttyUSB0
+roslaunch arm_launch arm.launch
+rosrun rqt_joint_trajectory_controller rqt_joint_trajectory_controller 
