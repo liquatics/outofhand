@@ -1,0 +1,31 @@
+1. A how-to-guide on robotic arm manipulation in ROS
+
+2. If this is your first time working with a robot arm, it may seem daunting, even terrifying. Maybe you have nightmares about it. Well, today we're going to teach you how to effect a robot arm using python and ros in a simple, straightforward way that does not involve hair removal. We'll walk you through the initial set up, creating a testing scenario, and finally, how to use the hardware.
+
+3. Here's the initial set up
+
+4. First, attach the positive leads to the red wire and the negative leads to the black wire. Make sure that the power supply is turned off! Otherwise you're in for quite the shock! Then, turn on the power supply and supply the arm with 12 V. 
+
+5. Bring up the terminal in ROS. We must build the packages inside catkin workspace. Once that is finished, reopen the terminal. Set up ROS with the bash file. And be absolutely sure you have activate the arm's USB port. You've made it. You can finally launch either the arm simulation or the hardware arm itself.
+
+6. ROS includes sliders which can be used to move the elbow and medial joints of the arm. Because who cares about the other joints, you only have 2 DOF.
+
+7. Here's what a functioning arm looks like, in case you were wondering.
+
+8. You can also test the arm in a simulator.
+
+9. Using the terminal, publish a message to /right_arm_controller/command. This message must include all 5 joints, even though only 2 of them work. You must also empty the velocities, accelerations, and effort to appease the ROS gods. Additionally, you must also input a value for time_from_start to give the arm time to move to your specified location.
+
+10. If a terminal command is not your thing, you can also effect the arm with a python script. Make sure all the joints are specified and the array values match the joints. You can use an if statement to control what position your arm is moving to.
+
+Oh look! He might be starting the macarena!
+
+11. Despite this perfect environment, you may find yourself having problems with ROS...
+
+12. Exhibit A. The sliders are not as accurate as you think they are and are prone to undershoot your position. To find out by how much, you must turn the sliders off and on again.
+
+13. Here are 2 examples of how the same position can yield different results.
+
+14. I hope you've learned something because we did and it was a slow, tedious process. Happy effecting!
+
+
